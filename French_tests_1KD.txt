@@ -1,0 +1,25 @@
+select * from net_salary_per_town_categories nsptc 
+--
+
+select round(avg("SNHM14")::numeric,2) , round(avg("SNHMC14")::numeric,2) from net_salary_per_town_categories nsptc  /* średnia krajowa za godine i średnia exectuvie za godzine  */ 
+select 
+avg("SNHM14")*160 as mean_monthly, avg("SNHMC14")*160 as mean_monthly_exectuvie,
+min("SNHM14")*160 as min_mean_monthly , min("SNHMC14")*160 as min_mean_monthly_exectuvie, max("SNHM14")*160 as min_mean_monthly, max("SNHMC14")*160 as min_mean_monthly_exectuvie
+from net_salary_per_town_categories nsptc  /* średnia krajowa za godine i średnia exectuvie za godzine  */ 
+
+select
+percentile_cont(0.5) within group (order by "SNHM14")as mediana_mean_salary, percentile_cont(0.5) within group (order by "SNHMC14") as mediana_mean_exectuvie
+from net_salary_per_town_categories nsptc 
+
+-- SNHM14 : mean net salary , E14TST : total number of firms in the town
+
+select "SNHM14"/"E14TST", * from net_salary_per_town_categories nsptc 
+left join base_etablissement_par_tranche_effectif bepte  on nsptc."CODGEO" =bepte."CODGEO"
+
+/*
+SNHM1814 : mean net salary per hour for 18-25 years old
+SNHM2614 : mean net salary per hour for 26-50 years old
+SNHM5014 : mean net salary per hour for >50 years old
+ */
+select avg("SNHM1814") as mean_18_25 , avg("SNHM2614") as mean_26_50, avg("SNHM5014") as mean_more_50 -- mean avg versus age 
+from net_salary_per_town_categories nsptc 
