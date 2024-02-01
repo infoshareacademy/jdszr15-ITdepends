@@ -1,0 +1,4 @@
+--sprawdzanie unikalności.
+SELECT CASE WHEN count(distinct town_code)= count(town_code)
+THEN 'column values are unique' ELSE 'column values are NOT unique' END
+FROM name_geographic_information ngi;
