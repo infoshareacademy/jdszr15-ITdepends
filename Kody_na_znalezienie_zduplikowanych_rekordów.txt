@@ -1,0 +1,22 @@
+--Kody na znalezienie zduplikowanych miast:
+--1) używając count grupujemy w jeden wiersz dane miasto (czyli jeśli miasto X jest 4x powtórzone, to dostaniemy jeden wiersz z count = 4):
+
+SELECT bepte.town_name, count(town_name) FROM "France".base_etablissement_par_tranche_effectif bepte 
+GROUP BY town_name 
+HAVING count(town_name)>1 
+ORDER BY town_name;
+
+--2) używając ROW_NUMBER () (PARTITION BY... ORDER BY ...) - pokazuje powielone wiersze z danego miasta 
+--(czyli jeśli miasto X jest 4x powtórzone, to dostaniemy trzy wiersze z row_num: 2, 3, 4)
+
+WITH q AS 
+(SELECT 
+	bepte.town_name, 
+	ROW_NUMBER () OVER (PARTITION BY town_name ORDER BY town_name) AS row_num
+	FROM "France".base_etablissement_par_tranche_effectif bepte)
+SELECT 
+	q.town_name,
+	q.row_num
+	FROM q
+WHERE q.row_num > 1
+ORDER BY q.town_name;
