@@ -14,6 +14,9 @@ from net_salary_per_town_categories nsptc
 select round(avg(salary_h_18_25)::numeric,2), avg(salary_h_women_26_50), avg(salary_h_women_50)
 from net_salary_per_town_categories nsptc 
 
+select avg(salary_h_men_emp),  avg(salary_h_women_emp)
+from net_salary_per_town_categories nsptc  -- % ile 
+
  -- percentyle, mediana 
 select
 percentile_cont(0.5) WITHIN group (order by salary)as mediana_mean_salary, 
@@ -33,6 +36,8 @@ percentile_cont(0.1) within group (order by nsptc.salary_h_men_ceo::NUMERIC) as 
 FROM net_salary_per_town_categories nsptc
 JOIN name_geographic_information ngis ON nsptc.town_code = ngis.town_code
 GROUP BY ngis.region) AS q 
+
+
 
 
 select nsptc.salary_h_women_ceo, region, avg(salary_h_women_ceo) over (partition by region) as avg
@@ -134,6 +139,8 @@ median_women_ceo, median_men_ceo,
 richest_women_ceo, richest_men_ceo,
 poorest_women_ceo, poorest_men_ceo
 ORDER BY ngis.region
+
+
 
 
 -- COPY salary_per_town_categories TO 'C:\tmp\persons_db.csv' DELIMITER ',' CSV HEADER;
