@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>ASTEROIDS</title>
+  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    /* Custom style to reduce title size */
+    .login h1 {
+      font-size: 80%; /* Reduce font size by 20% */
+    }
+  </style>
+</head>
+
+<body style="background: #000;">
+  <div class="login">
+    <h1>Asteroids prediction</h1>
+
+    <!-- Image of Asteroid -->
+    <div style="text-align: center;">
+      <img src="{{ url_for('static', filename='images/asteroid.jpg') }}" alt="Asteroid" style="width:240px;height:auto;"> <!-- Reduce width by 20% -->
+    </div>
+
+    <!-- Main Input For Receiving Query to our ML -->
+    <form action="{{ url_for('predict') }}" method="post">
+      <input type="text" name="relative_velocity" placeholder="relative_velocity" required="required" />
+      <input type="text" name="est_diameter_min" placeholder="est_diameter_min" required="required" />
+      <input type="text" name="est_diameter_max" placeholder="est_diameter_max" required="required" />
+      <input type="text" name="miss_distance" placeholder="miss_distance" required="required" />
+      <input type="text" name="absolute_magnitude" placeholder="absolute_magnitude" required="required" />
+      <button type="submit" class="btn btn-primary btn-block btn-large">Predict if hazardous</button>
+    </form>
+
+    <br>
+    <br>
+    {{ prediction_text }}
+  </div>
+</body>
+</html>
